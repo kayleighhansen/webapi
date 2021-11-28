@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using BooksApi.Models;
 using Microsoft.Extensions.Options;
+using BooksApi.Services;
 
 
 namespace BooksApi
@@ -36,7 +37,10 @@ namespace BooksApi
             services.AddSingleton<IBookstoreDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<BookstoreDatabaseSettings>>().Value);
 
-            services.AddControllers();
+            services.AddSingleton<BookService>();
+
+            services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BooksApi", Version = "v1" });
